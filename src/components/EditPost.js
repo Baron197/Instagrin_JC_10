@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Image, ActivityIndicator } from 'react-native';
+import { View, Image, ActivityIndicator, Keyboard } from 'react-native';
 import { Header, Icon, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import { onEditPostCaptionChange, saveEditPost } from '../actions';
 
 class EditPost extends Component {
+    state = { imageHeight: 350 }
+
     savePost = () => {
         this.props.saveEditPost({ 
             caption: this.props.caption,
@@ -22,6 +24,16 @@ class EditPost extends Component {
         if(!this.props.username) {
             this.props.navigation.goBack()
         }
+    }
+
+    componentWillMount() {
+        this.keyboardDidShowSub = Keyboard.addListener('keyboardDidShow', () => this.setState({ imageHeight: 150 }));
+        this.keyboardDidHideSub = Keyboard.addListener('keyboardDidHide', () => this.setState({ imageHeight: 350 }));
+      }
+    
+    componentWillUnmount() {
+        this.keyboardDidShowSub.remove();
+        this.keyboardDidHideSub.remove();
     }
 
     render() {
@@ -64,7 +76,7 @@ class EditPost extends Component {
                         </Left>
                     </CardItem>
                     <CardItem cardBody>
-                        <Image source={{uri: this.props.imageURL }} style={{height: 350, width: null, flex: 1}}/>
+                        <Image source={{uri: this.props.imageURL }} style={{height: this.state.imageHeight, width: null, flex: 1}}/>
                     </CardItem>
                     <CardItem>
                         <Left>
