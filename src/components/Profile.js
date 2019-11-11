@@ -6,11 +6,11 @@ import { initEditProfile, selectProfilePost } from '../actions';
 
 class Profile extends Component {
 
-    componentDidUpdate() {
-        if(this.props.postDetail) {
-            this.props.navigation.navigate('PostDetail')
-        }
-    }
+    // componentDidUpdate() {
+    //     if(this.props.postDetail) {
+    //         this.props.navigation.navigate('PostDetail')
+    //     }
+    // }
 
     onBtnEditProfilePress = () => {
         this.props.initEditProfile({
@@ -18,6 +18,11 @@ class Profile extends Component {
             profileImage: this.props.user.photoURL
         })
         this.props.navigation.navigate('EditProfile')
+    }
+
+    onSelectPostPress = (post) => {
+        this.props.selectProfilePost(post)
+        this.props.navigation.navigate('PostDetail')
     }
 
     renderListPost = () => {
@@ -32,7 +37,7 @@ class Profile extends Component {
                 <View 
                     style={styleObj}
                 >
-                    <TouchableWithoutFeedback onPress={() => this.props.selectProfilePost(item)}>
+                    <TouchableWithoutFeedback onPress={() => this.onSelectPostPress(item)}>
                         <Image source={{uri: item.imageURL }} style={{height: 125, width: '100%' }}/>
                     </TouchableWithoutFeedback>
                 </View>
@@ -48,7 +53,7 @@ class Profile extends Component {
                         text: this.props.user.displayName.toLowerCase().replace(/\s/g, ''), 
                         style: { color: 'black', fontSize: 18, fontWeight: '700' } 
                     }}
-                    leftContainerStyle={{ flex: 3 }}
+                    leftContainerStyle={{ flex: 4 }}
                     rightComponent={{ 
                         icon: 'menu', 
                         color: 'black',

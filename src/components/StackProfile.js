@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
 import PostDetailProfile from './PostDetailProfile';
+import EditPost from './EditPost';
 
 const StackProfile = createAppContainer(createStackNavigator(
     {
@@ -15,6 +16,9 @@ const StackProfile = createAppContainer(createStackNavigator(
         },
         PostDetail: {
             screen: PostDetailProfile
+        },
+        EditPost: {
+            screen: EditPost
         }
     },
     {

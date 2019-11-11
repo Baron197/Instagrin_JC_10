@@ -3,7 +3,7 @@ import { View, Image, TouchableWithoutFeedback } from 'react-native';
 import { Header, Icon, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
-import { selectProfilePost, deletePost } from '../actions';
+import { selectProfilePost, deletePost, editPostInit } from '../actions';
 
 class PostDetailProfile extends Component {
     state = { isVisible: false, deleteVisible: false }
@@ -14,9 +14,18 @@ class PostDetailProfile extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.selectProfilePost(null) 
+    }
+
     onDeletePress = () => {
         this.setState({ deleteVisible: false })
         this.props.deletePost(this.props.id)
+    }
+    onEditPress = () => {
+        this.setState({ isVisible: false })
+        this.props.editPostInit();
+        this.props.navigation.navigate('EditPost');
     }
 
     render() {
@@ -74,7 +83,7 @@ class PostDetailProfile extends Component {
                     height={'auto'}
                     onBackdropPress={() => this.setState({ isVisible: false })}
                 >
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={this.onEditPress}>
                         <Text
                             style={{
                                 fontSize: 16,
@@ -177,4 +186,4 @@ const mapStateToProps = ({ post }) => {
     }
 }
 
-export default connect(mapStateToProps, { selectProfilePost, deletePost })(PostDetailProfile);
+export default connect(mapStateToProps, { selectProfilePost, deletePost, editPostInit })(PostDetailProfile);

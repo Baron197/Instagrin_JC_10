@@ -6,7 +6,12 @@ import {
     FILL_POST_LIST,
     SELECT_POST_PROFILE,
     DELETE_POST,
-    DELETE_POST_SUCCESS
+    DELETE_POST_SUCCESS,
+    SELECT_EXPLORE_POST,
+    INIT_EDIT_POST,
+    EDIT_POST_CAPTION_CHANGE,
+    SAVE_EDIT_POST,
+    SAVE_EDIT_POST_SUCCESS
 } from './types';
 
 export const getListPost = () => {
@@ -55,6 +60,39 @@ export const deletePost = (postId) => {
                     type: DELETE_POST_SUCCESS
                 })
             })
+    }
+}
+
+export const selectExpPost = (selectedPost) => {
+    return {
+        type: SELECT_EXPLORE_POST,
+        payload: selectedPost
+    }
+}
+
+export const editPostInit = () => {
+    return {
+        type: INIT_EDIT_POST
+    }
+}
+
+export const onEditPostCaptionChange = (text) => {
+    return {
+        type: EDIT_POST_CAPTION_CHANGE,
+        payload: text
+    }
+}
+
+export const saveEditPost = (post,id) => {
+    return async (dispatch) => {
+        dispatch({ type: SAVE_EDIT_POST })
+        try {
+            await firebase.database().ref(`/posts/${id}`)
+                .set(post)
+            dispatch({ type: SAVE_EDIT_POST_SUCCESS })
+        } catch(err) {
+
+        }     
     }
 }
 
