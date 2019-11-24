@@ -2,14 +2,14 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Icon } from 'react-native-elements';
-import Home from './Home';
+import HomeStack from './HomeStack';
 import StackProfile from './StackProfile';
 import PostPhoto from './PostPhoto';
 import ExploreStack from './ExploreStack';
 
 export default createAppContainer(createBottomTabNavigator(
   {
-    Home: Home,
+    Home: HomeStack,
     Explore: ExploreStack,
     PostPhoto: PostPhoto,
     Profile: StackProfile

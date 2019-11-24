@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import { Header, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
-import { getListPost } from '../actions';
+import { getListPost, selectUserProfileHome } from '../actions';
 
 class Home extends Component {
     componentDidMount() {
         this.props.getListPost();
+    }
+
+    onHeaderCardPress = (user) => {
+        this.props.selectUserProfileHome(user)
+        this.props.navigation.navigate('OtherProfile')
     }
 
     renderListPost = () => {
@@ -15,15 +20,17 @@ class Home extends Component {
             return (
                 <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
                     <Card>
-                        <CardItem>
-                            <Left>
-                                <Thumbnail source={{uri: val.userPhoto }} />
-                                <Body>
-                                    <Text>{val.username}</Text>
-                                    <Text note>Instagrin User</Text>
-                                </Body>
-                            </Left>
-                        </CardItem>
+                        <TouchableWithoutFeedback onPress={() => this.onHeaderCardPress({ userId: val.userId, userPhoto: val.userPhoto, username: val.username })}>
+                            <CardItem>
+                                <Left>
+                                    <Thumbnail source={{uri: val.userPhoto }} />
+                                    <Body>
+                                        <Text>{val.username}</Text>
+                                        <Text note>Instagrin User</Text>
+                                    </Body>
+                                </Left>
+                            </CardItem>
+                        </TouchableWithoutFeedback>
                         <CardItem cardBody>
                             <Image source={{uri: val.imageURL }} style={{height: 350, width: null, flex: 1}}/>
                         </CardItem>
@@ -69,4 +76,4 @@ const mapStateToProps = ({ post }) => {
     }
 } 
 
-export default connect(mapStateToProps, { getListPost })(Home);
+export default connect(mapStateToProps, { getListPost, selectUserProfileHome })(Home);

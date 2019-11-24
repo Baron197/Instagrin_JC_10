@@ -8,7 +8,11 @@ import {
     INIT_EDIT_POST,
     EDIT_POST_CAPTION_CHANGE,
     SAVE_EDIT_POST,
-    SAVE_EDIT_POST_SUCCESS
+    SAVE_EDIT_POST_SUCCESS,
+    SELECT_USER_PROFILE_HOME,
+    SELECT_POST_OTHER_PROFILE_HOME,
+    SELECT_POST_OTHER_PROFILE_EXPLORE,
+    SELECT_USER_PROFILE_EXPLORE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -18,7 +22,11 @@ const INITIAL_STATE = {
     editPost: null,
     editPostLoading: false,
     deleteLoading: false,
-    deleteError: false
+    deleteError: false,
+    selectedProfileUserHome: null,
+    selectedProfileUserExplore: null,
+    selectedPostDetailOtherProfileHome: null,
+    selectedPostDetailOtherProfileExplore: null,
 }
 
 export default (state=INITIAL_STATE, action) => {
@@ -48,6 +56,14 @@ export default (state=INITIAL_STATE, action) => {
                 editPost: null, 
                 selectedPostDetailProfile: { ...state.selectedPostDetailProfile, caption: state.editPost.caption} 
             }
+        case SELECT_USER_PROFILE_HOME :
+            return { ...state, selectedProfileUserHome: action.payload }
+        case SELECT_USER_PROFILE_EXPLORE :
+            return { ...state, selectedProfileUserExplore: action.payload }
+        case SELECT_POST_OTHER_PROFILE_HOME :
+            return { ...state, selectedPostDetailOtherProfileHome: action.payload }
+        case SELECT_POST_OTHER_PROFILE_EXPLORE :
+            return { ...state, selectedPostDetailOtherProfileExplore: action.payload }
         default :
             return state;
     }

@@ -2,27 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, Platform, Image, ScrollView, TouchableWithoutFeedback } from 'react-native';
 import { Header, ListItem, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { initEditProfile, selectProfilePost } from '../actions';
+import { selectOtherProfilePostHome } from '../actions';
 
-class Profile extends Component {
-
-    // componentDidUpdate() {
-    //     if(this.props.postDetail) {
-    //         this.props.navigation.navigate('PostDetail')
-    //     }
-    // }
-
-    onBtnEditProfilePress = () => {
-        this.props.initEditProfile({
-            username: this.props.user.displayName,
-            profileImage: this.props.user.photoURL
-        })
-        this.props.navigation.navigate('EditProfile')
-    }
+class OtherProfileHome extends Component {
 
     onSelectPostPress = (post) => {
-        this.props.selectProfilePost(post)
-        this.props.navigation.navigate('PostDetail')
+        this.props.selectOtherProfilePostHome(post)
+        this.props.navigation.navigate('PostDetailOtherProfile')
     }
 
     renderListPost = () => {
@@ -49,49 +35,38 @@ class Profile extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    leftComponent={{ 
-                        text: this.props.user.displayName.toLowerCase().replace(/\s/g, ''), 
+                    centerComponent={{ 
+                        text: this.props.user.username.toLowerCase().replace(/\s/g, ''), 
                         style: { color: 'black', fontSize: 18, fontWeight: '700' } 
                     }}
-                    leftContainerStyle={{ flex: 4 }}
-                    rightComponent={{ 
-                        icon: 'menu', 
+                    leftComponent={{ 
+                        icon: 'arrow-back', 
                         color: 'black',
-                        onPress: () => this.props.navigation.toggleDrawer()
+                        onPress: () => this.props.navigation.goBack() 
                     }}
+                    placement={'left'}
+                    centerContainerStyle={{ flex: 4 }}
                     containerStyle={{
                         backgroundColor: '#fff',
                         justifyContent: 'space-around',
                         marginTop: Platform.OS === 'ios' ? 0 : - 25,
-                        borderBottomWidth: 0.5
+                        // borderBottomWidth: 0.5
                     }}
                 />
                 <ScrollView>
                     <ListItem
                         leftAvatar={{
-                            source: { uri: this.props.user.photoURL },
+                            source: { uri: this.props.user.userPhoto },
                             size: 'large'
                         }}
-                        title={this.props.user.displayName}
+                        title={this.props.user.username}
                         subtitle={'Instagrin User'}
-                    />
-                    <Button 
-                        title="Edit Profile"
-                        containerStyle={{ 
-                            marginVertical: 15, 
-                            marginHorizontal: 15, 
-                            borderWidth: 0.5,
-                            borderColor: 'gray'
-                        }}
-                        buttonStyle={{ borderColor: 'gray' }}
-                        titleStyle={{ color: 'black' }}
-                        type='outline'
-                        onPress={this.onBtnEditProfilePress}
                     />
                     <View style={{
                         flexDirection: 'row',
                         flexWrap: 'wrap',
-                        flex: 1
+                        flex: 1,
+                        marginVertical: 15
                         // justifyContent: 'space-between'
                     }}>
                         {this.renderListPost()}
@@ -102,16 +77,15 @@ class Profile extends Component {
     }
 }
 
-const mapStateToProps = ({ auth, post }) => {
-    var user = auth.user ? auth.user : { uid: '', displayName: '', photoURL: '' }
+const mapStateToProps = ({ post }) => {
+    var user = post.selectedProfileUserHome
     var listPost = post.postList.filter((item,index) => {
-        return user.uid === item.userId
+        return user.userId === item.userId
     })
     return {
         user,
-        listPost,
-        // postDetail: post.selectedPostDetailProfile
+        listPost
     }
 }
 
-export default connect(mapStateToProps, { initEditProfile, selectProfilePost })(Profile);
+export default connect(mapStateToProps, { selectOtherProfilePostHome })(OtherProfileHome);

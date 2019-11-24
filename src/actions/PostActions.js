@@ -11,7 +11,11 @@ import {
     INIT_EDIT_POST,
     EDIT_POST_CAPTION_CHANGE,
     SAVE_EDIT_POST,
-    SAVE_EDIT_POST_SUCCESS
+    SAVE_EDIT_POST_SUCCESS,
+    SELECT_POST_OTHER_PROFILE_HOME,
+    SELECT_POST_OTHER_PROFILE_EXPLORE,
+    SELECT_USER_PROFILE_HOME,
+    SELECT_USER_PROFILE_EXPLORE
 } from './types';
 
 export const getListPost = () => {
@@ -93,6 +97,34 @@ export const saveEditPost = (post,id) => {
         } catch(err) {
 
         }     
+    }
+}
+
+export const selectUserProfileHome = (user) => {
+    return {
+        type: SELECT_USER_PROFILE_HOME,
+        payload: user
+    }
+}
+
+export const selectUserProfileExplore = (user) => {
+    return {
+        type: SELECT_USER_PROFILE_EXPLORE,
+        payload: user
+    }
+}
+
+export const selectOtherProfilePostHome = (post) => {
+    return {
+        type: SELECT_POST_OTHER_PROFILE_HOME,
+        payload: post
+    }
+}
+
+export const selectOtherProfilePostExplore = (post) => {
+    return {
+        type: SELECT_POST_OTHER_PROFILE_EXPLORE,
+        payload: post
     }
 }
 
